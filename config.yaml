@@ -1,0 +1,24 @@
+data:
+  matches_csv: data/raw/atp_matches_till_2022.csv
+  players_csv: data/raw/atp_players_till_2022.csv
+  rankings_csv: data/raw/atp_rankings_till_2022.csv
+
+elo:
+  k_factor: 32
+  surfaces: [Hard, Clay, Grass, Carpet]
+
+features:
+  window_size: 10
+
+split:
+  # Train: matches before this date. Test: matches from this date onward (2022 season).
+  cutting_date: "2021-12-01"
+
+model:
+  n_estimators: 300
+  max_depth: 20
+  min_samples_leaf: 50
+  n_jobs: -1
+  random_state: 42
+
+dataset_seed: 42
