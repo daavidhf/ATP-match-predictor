@@ -25,6 +25,7 @@ from .features import (
     h2h_history,
     is_lefty,
 )
+from .odds import get_real_probabilities  # noqa: F401 -- re-exported for backwards compatibility
 
 
 def load_players(path: str) -> pd.DataFrame:
@@ -158,11 +159,3 @@ def predict_future_match(
         "p2_h2h_pct_1sWon": p2_h2h_stats.get("pct_1stWon"),
         "p2_h2h_pct_2ndWon": p2_h2h_stats.get("pct_2ndWon"),
     }
-
-
-def get_real_probabilities(odd_p1: float, odd_p2: float):
-    """Normalize betting odds (which include the bookmaker's margin) into probabilities."""
-    implied_p1 = 1 / odd_p1
-    implied_p2 = 1 / odd_p2
-    total_implied = implied_p1 + implied_p2
-    return implied_p1 / total_implied * 100, implied_p2 / total_implied * 100
