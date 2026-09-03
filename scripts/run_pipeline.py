@@ -26,7 +26,7 @@ from sklearn.model_selection import cross_val_score
 from src.config import load_config
 from src.data import load_matches
 from src.dataset import build_dataset
-from src.evaluate import baseline_higher_rank_wins, evaluate_predictions
+from src.evaluate import baseline_higher_rank_wins, calibration_table, evaluate_predictions
 from src.train import make_model, season_splitter, season_id, time_split
 
 
@@ -73,10 +73,17 @@ def main():
     y_proba = model.predict_proba(X_test)[:, 1]
     metrics = evaluate_predictions(y_test, y_pred, y_proba)
 
-    print("\n--- Test metrics (2022 holdout) ---")
+    print("\n--- Test metrics (2022 holdout) -- log-loss/Brier are what matter, accuracy is a sanity check ---")
     for name, value in metrics.items():
         print(f"  {name}: {value:.4f}")
-    print(f"  improvement over baseline: {(metrics['accuracy'] - baseline_acc) * 100:+.2f} pts")
+    print(f"  improvement over baseline accuracy: {(metrics['accuracy'] - baseline_acc) * 100:+.2f} pts")
+    print(
+        "  (this baseline and accuracy improvement are a sanity check only -- "
+        "the real bar is backtest ROI against de-vigged market odds, see src/backtest.py)"
+    )
+
+    print("\n--- Calibration (10 quantile buckets: predicted vs. observed P1-win rate) ---")
+    print(calibration_table(y_test, y_proba).to_string(index=False))
 
     importances = (
         pd.Series(model.feature_importances_, index=X_train.columns)
