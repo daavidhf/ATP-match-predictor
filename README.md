@@ -39,7 +39,11 @@ python scripts/run_pipeline.py
 which also prints feature importances and a walk-forward
 season-by-season cross-validation (the "official" validation strategy
 for any decisions about features or hyperparameters -- see
-[Methodology](#methodology)).
+[Methodology](#methodology)). That walk-forward CV, replaying all 54
+seasons from 1969 through 2022 (expanding training window, testing on
+the season immediately after), gives a **mean accuracy of 68.9%**
+(std 2.9 pts across seasons) with the last, 2022 split at 66.8% --
+consistent with the single fixed 2022 holdout above.
 
 ## Repository layout
 
