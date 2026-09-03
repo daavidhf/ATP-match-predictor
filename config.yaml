@@ -22,3 +22,16 @@ model:
   random_state: 42
 
 dataset_seed: 42
+
+# Value-betting backtest (src/backtest.py). Not yet wired to a real
+# odds dataset in this repo -- see scripts/download_odds.py and the
+# README's Known limitations. Defaults here are a starting point, not
+# tuned values: pick the edge threshold via
+# backtest.choose_threshold_and_evaluate_holdout on validation
+# seasons, never against the same holdout you report results on.
+backtest:
+  edge_thresholds: [0.02, 0.05, 0.08, 0.12]
+  stake_strategy: flat  # or "kelly"
+  flat_stake: 1.0
+  kelly_fraction_mult: 0.25
+  initial_bankroll: 100.0
